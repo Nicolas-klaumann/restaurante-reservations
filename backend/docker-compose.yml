@@ -13,5 +13,18 @@ services:
     volumes:
       - db-data:/var/lib/postgresql/data
 
+  backend:
+    build: .  # Altere para o caminho correto
+    restart: always
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_USER: user
+      DB_PASSWORD: pass
+      DB_NAME: reservations
+
 volumes:
   db-data:
