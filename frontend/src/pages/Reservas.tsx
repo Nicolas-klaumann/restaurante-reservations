@@ -60,7 +60,7 @@ const ReservasPage = ({ token }) => {
       fetchUserReservations();
     } catch (err) {
       setMessage({
-        text: err.response?.data?.message || err.message || 'Erro ao fazer reserva',
+        text: err.response?.data?.error || err.message || 'Erro ao fazer reserva',
         type: 'error'
       });
     } finally {
@@ -126,7 +126,7 @@ const ReservasPage = ({ token }) => {
                         </p>
                       </div>
                       {new Date(reserva.dateTime) > new Date() && (
-                        <button onClick={() => handleCancelReservation(reserva._id)} className="text-red-500 hover:text-red-700 text-sm">
+                        <button onClick={() => handleCancelReservation(reserva.id)} className="text-red-500 hover:text-red-700 text-sm">
                           Cancelar
                         </button>
                       )}

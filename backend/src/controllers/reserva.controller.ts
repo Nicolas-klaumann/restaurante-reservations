@@ -75,15 +75,19 @@ export const deletarReserva = async (req: any, res: any) => {
     const { id } = req.params;
     const userId = (req as any).user.userId;
 
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+    });
+
     const reserva = await prisma.reservation.findUnique({
-      where: { id },
+      where: { id: parseInt(id, 10) },
     });
 
     if (!reserva) {
       return res.status(404).json({ error: 'Reserva não encontrada' });
     }
 
-    if (reserva.userId !== userId) {
+    if (reserva.userId !== userId && user?.role != 'ADMIN') {
       return res
         .status(403)
         .json({ error: 'Você não tem permissão para cancelar esta reserva' });
@@ -97,12 +101,64 @@ export const deletarReserva = async (req: any, res: any) => {
     }
 
     await prisma.reservation.delete({
-      where: { id },
+      where: { id: parseInt(id, 10) },
     });
 
     res.status(200).json({ message: 'Reserva cancelada com sucesso' });
   } catch (error) {
     console.error('Erro ao cancelar reserva:', error);
     res.status(500).json({ error: 'Erro interno ao cancelar reserva' });
+  }
+};
+
+export const listarTodasReservas = async (req: any, res: any) => {
+  try {
+    const filters = req.query;
+    const whereClause: any = {};
+
+    if (filters?.status != '') {
+      if (filters?.status === 'AGENDADAS') {
+        whereClause.dateTime = {
+          gt: new Date(),
+        };
+      }
+
+      if (filters?.status === 'CONCLUIDAS') {
+        whereClause.dateTime = {
+          lt: new Date(), // "lt" significa "less than"
+        };
+      }
+    }
+
+    const reservasFind = await prisma.reservation.findMany({
+      where: whereClause,
+      orderBy: {
+        dateTime: 'desc',
+      },
+    });
+
+    const reservas = await Promise.all(
+      reservasFind.map(async (reserva) => {
+        const user = await prisma.user.findUnique({
+          where: { id: reserva.userId },
+          select: {
+            name: true,
+            email: true,
+          },
+        });
+
+        return {
+          ...reserva,
+          user,
+        };
+      })
+    );
+
+    res.json({
+      data: reservas,
+    });
+  } catch (error) {
+    console.error('Erro ao listar reservas:', error);
+    res.status(500).json({ error: 'Erro interno ao listar reservas' });
   }
 };

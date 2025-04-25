@@ -17,7 +17,12 @@ const LoginPage = ({ setToken }) => {
       const res = await axios.post('http://localhost:5000/api/auth/login', { email, password });
       setToken(res.data.token);
       localStorage.setItem('token', res.data.token);
-      navigate('/reservas');
+
+      if (res.data.admin) {
+        navigate('/admin');
+      } else {
+        navigate('/reservas');
+      }
     } catch (err) {
       setError('Credenciais inválidas');
     }

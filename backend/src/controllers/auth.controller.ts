@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 const JWT_SECRET = process.env.JWT_SECRET || 'defaultsecret';
 
 export const register = async (req: Request, res: Response) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, role } = req.body;
 
   const userExists = await prisma.user.findUnique({ where: { email } });
   if (userExists) {
@@ -17,7 +17,7 @@ export const register = async (req: Request, res: Response) => {
   const hashedPassword = await bcrypt.hash(password, 10);
 
   const user = await prisma.user.create({
-    data: { name, email, password: hashedPassword },
+    data: { name, email, password: hashedPassword, role },
   });
 
   res
@@ -35,5 +35,5 @@ export const login = async (req: Request, res: Response) => {
 
   const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '1h' });
 
-  res.json({ token });
+  res.json({ token, admin: user.role === 'ADMIN' ? true : false });
 };
