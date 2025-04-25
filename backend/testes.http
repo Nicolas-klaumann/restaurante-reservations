@@ -1,0 +1,27 @@
+### Registrar usuário
+POST http://localhost:3000/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "teste@teste.com",
+  "password": "123456"
+}
+
+### Fazer login
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "teste@teste.com",
+  "password": "123456"
+}
+
+### Criar reserva (substitua o TOKEN abaixo)
+POST http://localhost:3000/api/reservas
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc0NTU0NDI2MywiZXhwIjoxNzQ1NTQ3ODYzfQ.1x7yPBBmHRyOOBbc1-KrnnG5kWPG1-PwP3lZuQHOrLs
+
+{
+  "table": 5,
+  "dateTime": "2025-04-25T20:00:00"
+}
