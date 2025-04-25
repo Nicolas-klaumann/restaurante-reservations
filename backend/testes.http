@@ -16,7 +16,7 @@ Content-Type: application/json
   "password": "123456"
 }
 
-### Criar reserva (substitua o TOKEN abaixo)
+### Criar reserva
 POST http://localhost:3000/api/reservas
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc0NTU0NDI2MywiZXhwIjoxNzQ1NTQ3ODYzfQ.1x7yPBBmHRyOOBbc1-KrnnG5kWPG1-PwP3lZuQHOrLs
