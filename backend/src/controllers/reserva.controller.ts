@@ -43,25 +43,21 @@ export const criarReserva = async (req: any, res: any) => {
 export const minhasReservas = async (req: any, res: any) => {
   try {
     const userId = (req as any).user.userId;
-    console.log(userId);
 
-    // Busca todas as reservas do usuário, ordenadas pelas mais recentes
     const reservas = await prisma.reservation.findMany({
       where: {
         userId: userId,
       },
       orderBy: {
-        dateTime: 'desc', // Ordena da reserva mais recente para a mais antiga
+        dateTime: 'desc',
       },
       select: {
         id: true,
         table: true,
         dateTime: true,
-        // Você pode incluir outros campos se necessário
       },
     });
 
-    // Formata as datas para o frontend (opcional)
     const reservasFormatadas = reservas.map((reserva) => ({
       ...reserva,
       dateTime: reserva.dateTime.toISOString(), // Ou outro formato desejado
@@ -71,5 +67,42 @@ export const minhasReservas = async (req: any, res: any) => {
   } catch (error) {
     console.error('Erro ao buscar reservas:', error);
     res.status(500).json({ error: 'Erro interno ao buscar reservas' });
+  }
+};
+
+export const deletarReserva = async (req: any, res: any) => {
+  try {
+    const { id } = req.params;
+    const userId = (req as any).user.userId;
+
+    const reserva = await prisma.reservation.findUnique({
+      where: { id },
+    });
+
+    if (!reserva) {
+      return res.status(404).json({ error: 'Reserva não encontrada' });
+    }
+
+    if (reserva.userId !== userId) {
+      return res
+        .status(403)
+        .json({ error: 'Você não tem permissão para cancelar esta reserva' });
+    }
+
+    const agora = new Date();
+    if (new Date(reserva.dateTime) < agora) {
+      return res
+        .status(400)
+        .json({ error: 'Não é possível cancelar reservas já realizadas' });
+    }
+
+    await prisma.reservation.delete({
+      where: { id },
+    });
+
+    res.status(200).json({ message: 'Reserva cancelada com sucesso' });
+  } catch (error) {
+    console.error('Erro ao cancelar reserva:', error);
+    res.status(500).json({ error: 'Erro interno ao cancelar reserva' });
   }
 };
