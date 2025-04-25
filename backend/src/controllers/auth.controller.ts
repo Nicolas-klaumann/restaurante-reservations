@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 const JWT_SECRET = process.env.JWT_SECRET || 'defaultsecret';
 
 export const register = async (req: Request, res: Response) => {
-  const { email, password } = req.body;
+  const { name, email, password } = req.body;
 
   const userExists = await prisma.user.findUnique({ where: { email } });
   if (userExists) {
@@ -17,7 +17,7 @@ export const register = async (req: Request, res: Response) => {
   const hashedPassword = await bcrypt.hash(password, 10);
 
   const user = await prisma.user.create({
-    data: { email, password: hashedPassword },
+    data: { name, email, password: hashedPassword },
   });
 
   res
@@ -27,8 +27,6 @@ export const register = async (req: Request, res: Response) => {
 
 export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
-
-  console.log('entrei');
 
   const user = await prisma.user.findUnique({ where: { email } });
   if (!user || !(await bcrypt.compare(password, user.password))) {

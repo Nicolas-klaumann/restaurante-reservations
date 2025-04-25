@@ -39,3 +39,37 @@ export const criarReserva = async (req: any, res: any) => {
 
   res.json(reserva);
 };
+
+export const minhasReservas = async (req: any, res: any) => {
+  try {
+    const userId = (req as any).user.userId;
+    console.log(userId);
+
+    // Busca todas as reservas do usuário, ordenadas pelas mais recentes
+    const reservas = await prisma.reservation.findMany({
+      where: {
+        userId: userId,
+      },
+      orderBy: {
+        dateTime: 'desc', // Ordena da reserva mais recente para a mais antiga
+      },
+      select: {
+        id: true,
+        table: true,
+        dateTime: true,
+        // Você pode incluir outros campos se necessário
+      },
+    });
+
+    // Formata as datas para o frontend (opcional)
+    const reservasFormatadas = reservas.map((reserva) => ({
+      ...reserva,
+      dateTime: reserva.dateTime.toISOString(), // Ou outro formato desejado
+    }));
+
+    res.json(reservasFormatadas);
+  } catch (error) {
+    console.error('Erro ao buscar reservas:', error);
+    res.status(500).json({ error: 'Erro interno ao buscar reservas' });
+  }
+};

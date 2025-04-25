@@ -1,0 +1,53 @@
+# Node modules
+node_modules/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor folders and files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Coverage reports
+coverage/
+
+# Build output
+dist/
+build/
+
+# Dependency directories
+bower_components/
+
+# Optional npm cache directory
+.npm/
+
+# Optional eslint cache
+.eslintcache
+
+# TypeScript (se estiver usando)
+*.tsbuildinfo
+
+# PM2 logs
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Docker
+docker-compose.override.yml
+
+# Prisma (se estiver usando)
+prisma/migrations/

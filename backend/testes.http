@@ -1,8 +1,9 @@
 ### Registrar usuário
-POST http://localhost:3000/api/auth/register
+POST http://localhost:5000/api/auth/register
 Content-Type: application/json
 
 {
+  "name": "Nicolas",
   "email": "teste@teste.com",
   "password": "123456"
 }
@@ -17,11 +18,16 @@ Content-Type: application/json
 }
 
 ### Criar reserva
-POST http://localhost:3000/api/reservas
+POST http://localhost:5000/api/reservas
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc0NTU0NDI2MywiZXhwIjoxNzQ1NTQ3ODYzfQ.1x7yPBBmHRyOOBbc1-KrnnG5kWPG1-PwP3lZuQHOrLs
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc0NTU1MzM4MSwiZXhwIjoxNzQ1NTU2OTgxfQ.ume5l2K14Ctt5IeZ4VkkfH91soXznniAKeQG94QixyU
 
 {
   "table": 5,
   "dateTime": "2025-04-25T20:00:00"
 }
+
+### Minhas reservas
+GET http://localhost:5000/api/reservas/minhas-reservas
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc0NTU1MzM4MSwiZXhwIjoxNzQ1NTU2OTgxfQ.ume5l2K14Ctt5IeZ4VkkfH91soXznniAKeQG94QixyU
