@@ -1,23 +1,60 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
+# dependências
 /node_modules
-/.pnp
-.pnp.js
 
-# testing
-/coverage
-
-# production
+# produção
 /build
+/dist
 
-# misc
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# dados do sistema operacional
 .DS_Store
+Thumbs.db
+
+# arquivos do editor/IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# arquivos de ambiente
+.env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+# coverage (caso use testes)
+coverage/
+
+# arquivos temporários
+*.log
+*.tmp
+*.temp
+
+# configurações do MacOS e Linux
+*.swp
+*.bak
+*.orig
+*.save
+
+# arquivos do sistema
+*.tgz
+
+# arquivos de build do Next.js (caso esteja usando)
+.next
+out
+
+# arquivos do parcel (se usado)
+.cache/
+.parcel-cache/
+
+# Storybook (se estiver usando)
+.storybook-out/
+storybook-static/
+
+# outros possíveis diretórios temporários
+/.turbo

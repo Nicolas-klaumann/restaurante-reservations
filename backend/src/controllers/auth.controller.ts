@@ -20,11 +20,15 @@ export const register = async (req: Request, res: Response) => {
     data: { email, password: hashedPassword },
   });
 
-  res.status(201).json({ message: 'Usuário criado com sucesso', userId: user.id });
+  res
+    .status(201)
+    .json({ message: 'Usuário criado com sucesso', userId: user.id });
 };
 
 export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
+
+  console.log('entrei');
 
   const user = await prisma.user.findUnique({ where: { email } });
   if (!user || !(await bcrypt.compare(password, user.password))) {
